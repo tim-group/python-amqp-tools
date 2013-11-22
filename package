@@ -1,0 +1,12 @@
+#!/bin/sh
+PACKAGE="python-amqp-tools"
+VERSION="0.0.1"
+ITERATION=1
+TMP_DIR="/tmp/$PACKAGE-$VERSION-$ITERATION"
+
+rm -rf $TMP_DIR
+mkdir $TMP_DIR || exit 1
+rsync -a *.py $TMP_DIR/ || exit 1
+fpm -t deb -d 'python-amqplib' -m '<infra@timgroup.com>' -s dir --architecture all  --iteration $ITERATION -C $TMP_DIR --name $PACKAGE --version $VERSION --prefix /usr/bin . || exit 1
+rm -rf $TMP_DIR || exit 1
+
